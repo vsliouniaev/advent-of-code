@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	. "github.com/vsliouniaev/aoc/2021/util"
+	"strconv"
 )
 
 func main() {
@@ -42,7 +43,7 @@ func part1(file string) int {
 	return eps * gam
 }
 
-func part2(file string) int {
+func part2(file string) int64 {
 	lines := ReadLinesStrings(file)
 	width := len(lines[0])
 
@@ -55,19 +56,9 @@ func part2(file string) int {
 		co2 = filter(co2, i, leastCommon(co2, i))
 	}
 
-	var oxyd int
-	var co2d int
-
-	for i := 0; i < width; i++ {
-		if oxy[0][width-1-i] == '1' {
-			oxyd = oxyd | (1 << i)
-		}
-		if co2[0][width-1-i] == '1' {
-			co2d = co2d | (1 << i)
-		}
-	}
-
-	return oxyd * co2d
+	o, _ := strconv.ParseInt(oxy[0], 2, 64)
+	d, _ :=strconv.ParseInt(co2[0], 2, 64)
+	return o * d
 }
 
 func countAtPos(lines []string, pos int) (one int, zer int) {

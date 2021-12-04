@@ -36,3 +36,9 @@ func ReadLinesInts(path string) []int {
 	}
 	return ints
 }
+
+func Check(err error) {
+	if err != nil {
+		panic(err)
+	}
+}

@@ -37,9 +37,3 @@ func part1() int {
 
 	return count
 }
-
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
