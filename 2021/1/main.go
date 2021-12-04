@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	. "github.com/vsliouniaev/aoc/2021/util"
+	. "github.com/vsliouniaev/aoc/util"
 	"math"
 )
 
