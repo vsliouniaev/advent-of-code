@@ -15,6 +15,7 @@ func main() {
 func part1(file string) int {
 	pos := make(map[string]int)
 	for _, line := range ReadLinesStrings(file) {
+		// Could rewrite this in terms of part2
 		seg := parse(line)
 		var s int
 		var e int

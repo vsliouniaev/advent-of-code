@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func ReadLinesStrings(path string) []string {
@@ -32,6 +33,17 @@ func ReadLinesInts(path string) []int {
 		if err != nil {
 			panic(err)
 		}
+		ints = append(ints, i)
+	}
+	return ints
+}
+
+func ReadCSVLine(path string) []int {
+	lines := ReadLinesStrings(path)
+	var ints []int
+	for _, str := range strings.Split(lines[0], ",") {
+		i, err := strconv.Atoi(str)
+		Check(err)
 		ints = append(ints, i)
 	}
 	return ints
