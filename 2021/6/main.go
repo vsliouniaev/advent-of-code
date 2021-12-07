@@ -6,8 +6,8 @@ import (
 )
 
 func main() {
-	fmt.Printf("Part 1: %d\n", part1("2021/6/input")) // 362740
-	fmt.Printf("Part 2: %d\n", part2("2021/6/input")) // 1644874076764
+	fmt.Printf("Part 1: %d\n", part1("2021/6/sample")) // 362740
+	fmt.Printf("Part 2: %d\n", part2("2021/6/input"))  // 1644874076764
 }
 
 func part1(file string) int {
@@ -24,6 +24,15 @@ func afterDays(file string, days int) int {
 	for _, d := range util.ReadCSVLine(file) {
 		fish[d]++
 	}
+
+	// @eoincampbell:
+	// Day 8 is just day 0 - new fish
+	// To reset the ones that reproduce, just add them to day 6
+	//
+	//for d := 0; d < days; d++ {
+	//	fish[(d+7)%9] += fish[d%9]
+	//}
+
 	for day := 0; day < days; day++ {
 		add := fish[0]
 		fish = append(fish[1:], add)
