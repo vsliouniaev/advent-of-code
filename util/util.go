@@ -37,6 +37,24 @@ func ReadLinesInts(path string) []int {
 	}
 	return ints
 }
+func ReadLinesRunes(path string) [][]rune {
+	file, err := os.Open(path)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	var lines [][]rune
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, []rune(scanner.Text()))
+	}
+	err = scanner.Err()
+	if err != nil {
+		panic(err)
+	}
+	return lines
+}
 
 func ReadCSVLine(path string) []int {
 	lines := ReadLinesStrings(path)
