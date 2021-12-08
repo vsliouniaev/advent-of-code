@@ -2,60 +2,88 @@ package main
 
 import (
 	"fmt"
-	. "github.com/vsliouniaev/aoc/util"
+	"github.com/vsliouniaev/aoc/util"
+	"strconv"
+	"strings"
 )
 
 func main() {
-
-	fmt.Printf("Part 1: %d\n", part1("2020/6/input")) // 7120
-	fmt.Printf("Part 2: %d\n", part2("2020/6/input"))
+	fmt.Printf("Part 1: %d\n", part1("2020/8/input"))
+	fmt.Printf("Part 2: %d\n", part2("2020/8/input"))
 }
 
 func part1(file string) int {
-	sum := 0
-	qs := make(map[rune]struct{})
-	for _, line := range ReadLinesStrings(file) {
-		for _, l := range line {
-			qs[l] = struct{}{}
+	lines := util.ReadLinesStrings(file)
+	visited := make([]bool, len(lines))
+	acc := 0
+	i := 0
+	for {
+		if visited[i] == true {
+			return acc
 		}
-		if line == "" {
-			sum += len(qs)
-			qs = make(map[rune]struct{})
+		visited[i] = true
+		line := strings.Split(lines[i], " ")
+		command := line[0]
+		arg, err := strconv.Atoi(line[1])
+		util.Check(err)
+		switch command {
+		case "acc":
+			acc += arg
+			i++
+		case "nop":
+			i++
+		case "jmp":
+			i += arg
+		default:
+			panic(command)
 		}
 	}
-	sum += len(qs)
-
-	return sum
 }
 
 func part2(file string) int {
-	sum := 0
-	ppl := 0
-	qs := make(map[rune]int)
-	for _, line := range ReadLinesStrings(file) {
-		if line == "" {
-			for _, v := range qs {
-				if v == ppl {
-					sum++
-				}
+	lines := util.ReadLinesStrings(file)
+	visited := make([]bool, len(lines))
+	changec := 0
+	acc := 0
+	i := 0
+	cmd := 0
+	for i < len(lines) {
+		if visited[i] == true {
+			visited = make([]bool, len(lines))
+			changec++
+			acc = 0
+			i = 0
+			cmd = 0
+		}
+		visited[i] = true
+		line := strings.Split(lines[i], " ")
+		command := line[0]
+		arg, err := strconv.Atoi(line[1])
+		util.Check(err)
+		switch command {
+		case "acc":
+			acc += arg
+			i++
+		case "nop":
+			if cmd == changec {
+				fmt.Printf("Changed nop to jmp at %d\n", i)
+				i += arg
+			} else {
+				i++
 			}
-
-			qs = make(map[rune]int)
-			ppl = 0
-
-		} else {
-			ppl++
-			for _, l := range line {
-				qs[l] = qs[l] + 1
+			cmd++
+		case "jmp":
+			if cmd == changec {
+				fmt.Printf("Changed jmp to nop at %d\n", i)
+				i++
+			} else {
+				i += arg
 			}
+			cmd++
+		default:
+			panic(command)
 		}
 	}
 
-	for _, v := range qs {
-		if v == ppl {
-			sum++
-		}
-	}
-	return sum
-
+	return acc
 }

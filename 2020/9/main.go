@@ -3,87 +3,70 @@ package main
 import (
 	"fmt"
 	"github.com/vsliouniaev/aoc/util"
-	"strconv"
-	"strings"
+	"math"
 )
 
 func main() {
-	fmt.Printf("Part 1: %d\n", part1("2020/8/input"))
-	fmt.Printf("Part 2: %d\n", part2("2020/8/input"))
+	fmt.Printf("Part 1: %d\n", part1("2020/9/input")) // 22477624
+	fmt.Printf("Part 2: %d\n", part2("2020/9/input")) // 2980044
 }
 
 func part1(file string) int {
-	lines := util.ReadLinesStrings(file)
-	visited := make([]bool, len(lines))
-	acc := 0
-	i := 0
-	for {
-		if visited[i] == true {
-			return acc
+	size := 25
+	lines := util.ReadLinesInts(file)
+	ints := make([]int, size)
+	copy(ints, lines)
+	for i := size; i < len(lines); i++ {
+		if !canSum(lines[i], ints) {
+			return lines[i]
 		}
-		visited[i] = true
-		line := strings.Split(lines[i], " ")
-		command := line[0]
-		arg, err := strconv.Atoi(line[1])
-		util.Check(err)
-		switch command {
-		case "acc":
-			acc += arg
-			i++
-		case "nop":
-			i++
-		case "jmp":
-			i += arg
-		default:
-			panic(command)
-		}
+		ints = append(ints[1:], lines[i])
 	}
+	return -1
 }
 
 func part2(file string) int {
-	lines := util.ReadLinesStrings(file)
-	visited := make([]bool, len(lines))
-	changec := 0
-	acc := 0
-	i := 0
-	cmd := 0
-	for i < len(lines) {
-		if visited[i] == true {
-			visited = make([]bool, len(lines))
-			changec++
-			acc = 0
-			i = 0
-			cmd = 0
+	target := part1(file)
+	lines := util.ReadLinesInts(file)
+
+	// Contiguous sub-array:
+	//  If there is a contiguous array move right pointer until we exceed the target, then move left pointer until we're not.
+	//  If we found the answer, we're done. If not start moving right pointer again
+	sum := lines[0]
+	for a, z := 0, 1; z < len(lines); z++ {
+		for ; a < z && sum > target; a++ {
+			sum -= lines[a]
 		}
-		visited[i] = true
-		line := strings.Split(lines[i], " ")
-		command := line[0]
-		arg, err := strconv.Atoi(line[1])
-		util.Check(err)
-		switch command {
-		case "acc":
-			acc += arg
-			i++
-		case "nop":
-			if cmd == changec {
-				fmt.Printf("Changed nop to jmp at %d\n", i)
-				i += arg
-			} else {
-				i++
-			}
-			cmd++
-		case "jmp":
-			if cmd == changec {
-				fmt.Printf("Changed jmp to nop at %d\n", i)
-				i++
-			} else {
-				i += arg
-			}
-			cmd++
-		default:
-			panic(command)
+		if sum == target {
+			return minMaxInRangeSum(a, z-1, lines)
 		}
+		sum += lines[z]
 	}
 
-	return acc
+	return -1
+}
+
+func canSum(target int, ints []int) bool {
+	h := make(map[int]struct{})
+	for _, i := range ints {
+		if _, ok := h[target-i]; ok {
+			return true
+		}
+		h[i] = struct{}{}
+	}
+	return false
+}
+
+func minMaxInRangeSum(a, z int, lines []int) int {
+	min := math.MaxInt64
+	max := math.MinInt64
+	for ; a <= z; a++ {
+		if min > lines[a] {
+			min = lines[a]
+		}
+		if max < lines[a] {
+			max = lines[a]
+		}
+	}
+	return min + max
 }
