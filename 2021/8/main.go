@@ -36,6 +36,56 @@ func part1(file string) int {
 }
 
 func part2(file string) int {
+	// https://www.reddit.com/r/adventofcode/comments/rbj87a/2021_day_8_solutions/hnpmlzi/
+	s := 0
+	inputs := util.ReadLinesStrings(file)
+	for _, inp := range inputs {
+		spl := strings.Split(inp, " | ")
+		code := strings.Split(spl[0], " ")
+		dig := strings.Split(spl[1], " ")
+
+		one := encode(getLen(2, code)[0])
+		four := encode(getLen(4, code)[0])
+		lookup := make(map[byte]int)
+		for _, c := range code {
+			enc := encode(c)
+			switch len(c) {
+			case 2:
+				lookup[enc] = 1
+			case 3:
+				lookup[enc] = 7
+			case 4:
+				lookup[enc] = 4
+			case 5:
+				if bits.OnesCount8(enc&one) == 2 {
+					lookup[enc] = 3
+				} else if bits.OnesCount8(enc&four) == 2 {
+					lookup[enc] = 2
+				} else {
+					lookup[enc] = 5
+				}
+			case 6:
+				if bits.OnesCount8(enc&one) == 1 {
+					lookup[enc] = 6
+				} else if bits.OnesCount8(enc&four) == 4 {
+					lookup[enc] = 9
+				} else {
+					lookup[enc] = 0
+				}
+			case 7:
+				lookup[enc] = 8
+			default:
+				panic("unreachable")
+			}
+		}
+		for i, d := range dig {
+			s += lookup[encode(d)] * int(math.Pow(10, float64(len(dig)-i-1)))
+		}
+	}
+	return s
+}
+
+func part2orig(file string) int {
 	s := 0
 	inputs := util.ReadLinesStrings(file)
 	for _, inp := range inputs {

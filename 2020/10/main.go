@@ -3,70 +3,61 @@ package main
 import (
 	"fmt"
 	"github.com/vsliouniaev/aoc/util"
-	"math"
+	"sort"
 )
 
 func main() {
-	fmt.Printf("Part 1: %d\n", part1("2020/9/input")) // 22477624
-	fmt.Printf("Part 2: %d\n", part2("2020/9/input")) // 2980044
+	fmt.Printf("Part 1: %d\n", part1("2020/10/input"))
+	fmt.Printf("Part 2: %d\n", part2("2020/10/input")) // 453551299002368
 }
 
 func part1(file string) int {
-	size := 25
 	lines := util.ReadLinesInts(file)
-	ints := make([]int, size)
-	copy(ints, lines)
-	for i := size; i < len(lines); i++ {
-		if !canSum(lines[i], ints) {
-			return lines[i]
+	sort.Ints(lines)
+	ones := 0
+	thrs := 0
+	cur := 0
+	for _, i := range lines {
+		switch i - cur {
+		case 1:
+			ones++
+		case 3:
+			thrs++
 		}
-		ints = append(ints[1:], lines[i])
+		cur = i
 	}
-	return -1
+	thrs++
+
+	return ones * thrs
 }
 
 func part2(file string) int {
-	target := part1(file)
-	lines := util.ReadLinesInts(file)
+	adapters := util.ReadLinesInts(file)
+	adapters = append(adapters, 0)
+	sort.Ints(adapters)
+	adapters = append(adapters, adapters[len(adapters)-1]+3)
 
-	// Contiguous sub-array:
-	//  If there is a contiguous array move right pointer until we exceed the target, then move left pointer until we're not.
-	//  If we found the answer, we're done. If not start moving right pointer again
-	sum := lines[0]
-	for a, z := 0, 1; z < len(lines); z++ {
-		for ; a < z && sum > target; a++ {
-			sum -= lines[a]
+	var memo = make(map[int]int)
+	var pathsTo func(target int) int
+	// Start at the end, then search for all paths reachable from that, and recurse for all those as well.
+	pathsTo = func(target int) int {
+		if target == 0 {
+			return 1
 		}
-		if sum == target {
-			return minMaxInRangeSum(a, z-1, lines)
+		if ps, ok := memo[target]; ok {
+			return ps
 		}
-		sum += lines[z]
+		cnt := 0
+		for _, a := range adapters {
+			d := target - a
+			if d <= 3 && d > 0 {
+				ps := pathsTo(a)
+				memo[a] = ps
+				cnt += ps
+			}
+		}
+		return cnt
 	}
 
-	return -1
-}
-
-func canSum(target int, ints []int) bool {
-	h := make(map[int]struct{})
-	for _, i := range ints {
-		if _, ok := h[target-i]; ok {
-			return true
-		}
-		h[i] = struct{}{}
-	}
-	return false
-}
-
-func minMaxInRangeSum(a, z int, lines []int) int {
-	min := math.MaxInt64
-	max := math.MinInt64
-	for ; a <= z; a++ {
-		if min > lines[a] {
-			min = lines[a]
-		}
-		if max < lines[a] {
-			max = lines[a]
-		}
-	}
-	return min + max
+	return pathsTo(adapters[len(adapters)-1])
 }
