@@ -56,6 +56,19 @@ func ReadLinesRunes(path string) [][]rune {
 	return lines
 }
 
+func ReadLinesIntGrid(path string) [][]int {
+	lines := ReadLinesStrings(path)
+	out := make([][]int, len(lines))
+	for y, line := range lines {
+		out[y] = make([]int, len(line))
+		for x, c := range line {
+			ch := int(c - '0')
+			out[y][x] = ch
+		}
+	}
+	return out
+}
+
 func ReadCSVLine(path string) []int {
 	lines := ReadLinesStrings(path)
 	var ints []int
@@ -71,4 +84,22 @@ func Check(err error) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+type Queue struct {
+	data []interface{}
+}
+
+func (q *Queue) Push(e interface{}) {
+	q.data = append(q.data, e)
+}
+
+func (q *Queue) Pop() interface{} {
+	out := q.data[0]
+	q.data = q.data[1:]
+	return out
+}
+
+func (q *Queue) Len() int {
+	return len(q.data)
 }
