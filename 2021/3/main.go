@@ -57,7 +57,7 @@ func part2(file string) int64 {
 	}
 
 	o, _ := strconv.ParseInt(oxy[0], 2, 64)
-	d, _ :=strconv.ParseInt(co2[0], 2, 64)
+	d, _ := strconv.ParseInt(co2[0], 2, 64)
 	return o * d
 }
 

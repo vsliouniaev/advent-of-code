@@ -14,7 +14,7 @@ func main() {
 func part2() int {
 	ints := ReadLinesInts("1/input")
 	count := 0
-	for i :=3; i < len(ints); i++ {
+	for i := 3; i < len(ints); i++ {
 		prev := ints[i-3] + ints[i-2] + ints[i-1]
 		cur := ints[i-2] + ints[i-1] + ints[i-0]
 		if cur > prev {

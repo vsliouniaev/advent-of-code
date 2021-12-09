@@ -94,7 +94,7 @@ type segment struct {
 	sx int
 	ex int
 	sy int
-	ey   int
+	ey int
 }
 
 func (s *segment) isHorzVert() bool {

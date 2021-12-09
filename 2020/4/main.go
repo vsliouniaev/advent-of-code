@@ -65,8 +65,6 @@ func part2(file string) int {
 	return valids
 }
 
-
-
 func validator() map[string]func(string) bool {
 	return map[string]func(string) bool{
 		"byr": func(s string) bool {
@@ -121,7 +119,7 @@ func validator() map[string]func(string) bool {
 
 var (
 	hcl = regexp.MustCompile("#[0-9a-f]{6}")
-	ecl = map[string]struct{} {
+	ecl = map[string]struct{}{
 		"amb": {},
 		"blu": {},
 		"brn": {},
