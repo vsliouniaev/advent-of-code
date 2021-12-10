@@ -4,13 +4,14 @@ import (
 	"fmt"
 	u "github.com/vsliouniaev/aoc/util"
 	"math"
+	"math/big"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	fmt.Printf("Part 1: %d\n", part1("2020/13/input")) // 410 (too high)
-	//fmt.Printf("Part 2: %d\n", part2("2020/1/input"))
+	fmt.Printf("Part 1: %d\n", part1("2020/13/input")) // 410
+	fmt.Printf("Part 2: %d\n", part2("2020/13/input")) // 600691418730595
 }
 
 func part1(file string) int {
@@ -39,7 +40,17 @@ func part1(file string) int {
 	return sel
 }
 
-func part2(file string) int {
+func part2(file string) int64 {
+	lines := u.ReadLinesStrings(file)
+	var buses u.ChineseRemainder
+	for i, n := range strings.Split(lines[1], ",") {
+		if b, err := strconv.Atoi(n); err == nil {
+			buses = append(buses, &u.ChineseRemainderArg{
+				Remainder: big.NewInt(int64(b - i)),
+				Modulus:   big.NewInt(int64(b)),
+			})
+		}
+	}
 
-	return 0
+	return buses.Solve().Int64()
 }
