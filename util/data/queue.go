@@ -1,4 +1,4 @@
-package util
+package data
 
 // Dumbest queue impl possible
 

@@ -3,6 +3,8 @@ package util
 import (
 	"bufio"
 	"os"
+	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 )
@@ -84,4 +86,11 @@ func Check(err error) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func RelativeFile(file string) string {
+	_, b, _, _ := runtime.Caller(1)
+	path, err := os.Getwd()
+	Check(err)
+	return filepath.Join(strings.TrimPrefix(filepath.Dir(b), path)[1:], file)
 }

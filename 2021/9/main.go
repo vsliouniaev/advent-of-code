@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/vsliouniaev/aoc/util"
+	"github.com/vsliouniaev/aoc/util/data"
 	"sort"
 )
 
@@ -59,7 +60,7 @@ func part2(file string) int {
 }
 
 func basin(p *point, g grid) map[string]struct{} {
-	q := &util.Queue{}
+	q := &data.Queue{}
 	visited := map[string]struct{}{p.String(): {}}
 
 	addNeighbours := func(p *point) {

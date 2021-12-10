@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	u "github.com/vsliouniaev/aoc/util"
+	math2 "github.com/vsliouniaev/aoc/util/math"
 	"math"
 	"math/big"
 	"strconv"
@@ -42,10 +43,10 @@ func part1(file string) int {
 
 func part2(file string) int64 {
 	lines := u.ReadLinesStrings(file)
-	var buses u.ChineseRemainder
+	var buses math2.ChineseRemainder
 	for i, n := range strings.Split(lines[1], ",") {
 		if b, err := strconv.Atoi(n); err == nil {
-			buses = append(buses, &u.ChineseRemainderArg{
+			buses = append(buses, &math2.ChineseRemainderArg{
 				Remainder: big.NewInt(int64(b - i)),
 				Modulus:   big.NewInt(int64(b)),
 			})

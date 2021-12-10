@@ -1,4 +1,4 @@
-package util
+package data
 
 import (
 	"fmt"
@@ -9,6 +9,9 @@ func TestStack(t *testing.T) {
 	stk := &Stack{}
 	stk.Push('[')
 	stk.Push('{')
-	fmt.Printf("%c%c\n", stk.Pop(), stk.Pop())
+	p := fmt.Sprintf("%c%c", stk.Pop(), stk.Pop())
+	if p != "{[" {
+		t.Errorf(p)
+	}
 
 }

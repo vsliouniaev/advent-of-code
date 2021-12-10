@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	u "github.com/vsliouniaev/aoc/util"
+	"github.com/vsliouniaev/aoc/util/data"
 	"sort"
 )
 
@@ -27,7 +28,7 @@ func part1(file string) int {
 	}
 	sum := 0
 	for _, brackets := range u.ReadLinesStrings(file) {
-		stk := &u.Stack{}
+		stk := &data.Stack{}
 		for _, b := range brackets {
 			m, ok := matching[b]
 			if ok {
@@ -51,7 +52,7 @@ func part2(file string) int {
 	}
 	var scores []int
 	for _, brackets := range u.ReadLinesStrings(file) {
-		stk := &u.Stack{}
+		stk := &data.Stack{}
 		s := 0
 
 		for _, b := range brackets {

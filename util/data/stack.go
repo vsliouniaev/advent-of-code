@@ -1,4 +1,4 @@
-package util
+package data
 
 type Stack struct {
 	data []interface{}
