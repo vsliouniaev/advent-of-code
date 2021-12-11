@@ -1,4 +1,4 @@
-package navigation
+package nav
 
 import "fmt"
 

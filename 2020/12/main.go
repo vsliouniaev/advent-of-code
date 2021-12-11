@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	u "github.com/vsliouniaev/aoc/util"
-	"github.com/vsliouniaev/aoc/util/navigation"
+	"github.com/vsliouniaev/aoc/util/nav"
 	"strconv"
 )
 
@@ -13,58 +13,58 @@ func main() {
 }
 
 func part1(file string) int {
-	loc := navigation.Point{}
-	dir := navigation.Orientation{}
+	loc := nav.Point{}
+	dir := nav.Orientation{}
 
 	for _, line := range u.ReadLinesStrings(file) {
 		m, err := strconv.Atoi(line[1:])
 		u.Check(err)
-		var vec navigation.Vector
+		var vec nav.Vector
 		switch line[0] {
 		case 'N':
-			vec = navigation.GetVector(navigation.North).Magnitude(m)
+			vec = nav.GetVector(nav.North).Magnitude(m)
 		case 'S':
-			vec = navigation.GetVector(navigation.South).Magnitude(m)
+			vec = nav.GetVector(nav.South).Magnitude(m)
 		case 'E':
-			vec = navigation.GetVector(navigation.East).Magnitude(m)
+			vec = nav.GetVector(nav.East).Magnitude(m)
 		case 'W':
-			vec = navigation.GetVector(navigation.West).Magnitude(m)
+			vec = nav.GetVector(nav.West).Magnitude(m)
 		case 'F':
 			vec = dir.Forward().Magnitude(m)
 		case 'R':
-			dir.Turn((navigation.Right).Degrees(m))
+			dir.Turn((nav.Right).Degrees(m))
 		case 'L':
-			dir.Turn((navigation.Left).Degrees(m))
+			dir.Turn((nav.Left).Degrees(m))
 		default:
 			panic(line[0])
 		}
 		loc.Move(vec)
 	}
-	return navigation.Point{}.Manhattan(loc)
+	return nav.Point{}.Manhattan(loc)
 }
 
 func part2(file string) int {
-	ship := navigation.Point{}
-	waypoint := navigation.Point{X: 10, Y: 1}
+	ship := nav.Point{}
+	waypoint := nav.Point{X: 10, Y: 1}
 	for _, line := range u.ReadLinesStrings(file) {
 		m, err := strconv.Atoi(line[1:])
 		u.Check(err)
 		switch line[0] {
 		case 'N':
-			waypoint.Move(navigation.GetVector(navigation.North).Magnitude(m))
+			waypoint.Move(nav.GetVector(nav.North).Magnitude(m))
 		case 'S':
-			waypoint.Move(navigation.GetVector(navigation.South).Magnitude(m))
+			waypoint.Move(nav.GetVector(nav.South).Magnitude(m))
 		case 'E':
-			waypoint.Move(navigation.GetVector(navigation.East).Magnitude(m))
+			waypoint.Move(nav.GetVector(nav.East).Magnitude(m))
 		case 'W':
-			waypoint.Move(navigation.GetVector(navigation.West).Magnitude(m))
+			waypoint.Move(nav.GetVector(nav.West).Magnitude(m))
 		case 'F':
 			ship.Move(waypoint.Vector().Magnitude(m))
 		case 'R':
-			waypoint.Rotate((navigation.Right).Degrees(m))
+			waypoint.Rotate((nav.Right).Degrees(m))
 		case 'L':
-			waypoint.Rotate((navigation.Left).Degrees(m))
+			waypoint.Rotate((nav.Left).Degrees(m))
 		}
 	}
-	return navigation.Point{}.Manhattan(ship)
+	return nav.Point{}.Manhattan(ship)
 }

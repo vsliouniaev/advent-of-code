@@ -1,4 +1,4 @@
-package navigation
+package nav
 
 import (
 	"fmt"
@@ -35,6 +35,28 @@ func (p *Point) Rotate(turn Turn) *Point {
 	y := float64(p.Y)
 	p.X, p.Y = int(math.Round(x*c-y*s)), int(math.Round(x*s+y*c))
 	return p
+}
+
+func (p *Point) AllNeighbours(grid Grid) []*Point {
+	all := []*Point{
+		{X: p.X + 1, Y: p.Y - 0}, // e
+		{X: p.X + 1, Y: p.Y - 1}, // se
+		{X: p.X + 0, Y: p.Y - 1}, // s
+		{X: p.X - 1, Y: p.Y - 1}, // swX
+		{X: p.X - 1, Y: p.Y + 0}, // w
+		{X: p.X - 1, Y: p.Y + 1}, // nw
+		{X: p.X - 0, Y: p.Y + 1}, // n
+		{X: p.X + 1, Y: p.Y + 1}, // ne
+	}
+	// Remove out of range
+	var pts []*Point
+	for _, a := range all {
+		if a.X >= 0 && a.Y >= 0 && a.X <= grid.Maxx() && a.Y <= grid.Maxy() {
+			pts = append(pts, a)
+		}
+	}
+
+	return pts
 }
 
 func abs(v int) int {
