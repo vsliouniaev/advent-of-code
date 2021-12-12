@@ -2,6 +2,7 @@ package util
 
 import (
 	"bufio"
+	"github.com/vsliouniaev/aoc/util/nav"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -39,36 +40,46 @@ func ReadLinesInts(path string) []int {
 	}
 	return ints
 }
-func ReadLinesRunes(path string) [][]rune {
-	file, err := os.Open(path)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
 
-	var lines [][]rune
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		lines = append(lines, []rune(scanner.Text()))
+func ReadLinesRuneGrid(path string) nav.Grid {
+	//file, err := os.Open(path)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//defer file.Close()
+	//
+	//var lines [][]rune
+	//scanner := bufio.NewScanner(file)
+	//for scanner.Scan() {
+	//	lines = append(lines, []rune(scanner.Text()))
+	//}
+	//err = scanner.Err()
+	//if err != nil {
+	//	panic(err)
+	//}
+	//return lines
+	lines := ReadLinesStrings(path)
+	out := make([][]interface{}, len(lines))
+	for y, line := range lines {
+		out[y] = make([]interface{}, len(line))
+		for x, c := range line {
+			out[y][x] = c
+		}
 	}
-	err = scanner.Err()
-	if err != nil {
-		panic(err)
-	}
-	return lines
+	return nav.NewGrid(out)
 }
 
-func ReadLinesIntGrid(path string) [][]int {
+func ReadLinesIntGrid(path string) nav.Grid {
 	lines := ReadLinesStrings(path)
-	out := make([][]int, len(lines))
+	out := make([][]interface{}, len(lines))
 	for y, line := range lines {
-		out[y] = make([]int, len(line))
+		out[y] = make([]interface{}, len(line))
 		for x, c := range line {
 			ch := int(c - '0')
 			out[y][x] = ch
 		}
 	}
-	return out
+	return nav.NewGrid(out)
 }
 
 func ReadCSVLine(path string) []int {

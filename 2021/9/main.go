@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/vsliouniaev/aoc/util"
 	"github.com/vsliouniaev/aoc/util/data"
+	"github.com/vsliouniaev/aoc/util/nav"
 	"sort"
 )
 
@@ -13,59 +14,55 @@ func main() {
 }
 
 func part1(file string) int {
-	g := grid(util.ReadLinesIntGrid(file))
+	g := util.ReadLinesIntGrid(file)
 	riskLevels := 0
-	for y := range g {
-		for x := range g[y] {
-			v := g[y][x]
-			surround := point{x: x, y: y}.neighbours(g)
-			lowest := true
-			for _, s := range surround {
-				if g[s.y][s.x] <= v {
-					lowest = false
-				}
-			}
-			if lowest {
-				riskLevels += v + 1
+	for i, p := g.GetIterator(); p != nil; p = i.Next() {
+		v := g.Get(p).(int)
+		lowest := true
+		for _, s := range p.CompassNeighbours(g) {
+			if g.Get(s).(int) <= v {
+				lowest = false
 			}
 		}
+		if lowest {
+			riskLevels += v + 1
+		}
+
 	}
 	return riskLevels
 }
 
 func part2(file string) int {
-	g := grid(util.ReadLinesIntGrid(file))
+	g := util.ReadLinesIntGrid(file)
 	visited := make(map[string]struct{})
 	var basins []int
-	for y := range g {
-		for x := range g[y] {
-			p := &point{x: x, y: y}
-			if _, ok := visited[p.String()]; ok {
-				continue
-			}
-			visited[p.String()] = struct{}{}
-			if g.val(p) == 9 {
-				continue
-			}
-			b := basin(p, g)
-			basins = append(basins, len(b))
-			for v := range b {
-				visited[v] = struct{}{}
-			}
+	for i, p := g.GetIterator(); p != nil; p = i.Next() {
+		if _, ok := visited[p.String()]; ok {
+			continue
 		}
+		visited[p.String()] = struct{}{}
+		if g.Get(p) == 9 {
+			continue
+		}
+		b := basin(p, g)
+		basins = append(basins, len(b))
+		for v := range b {
+			visited[v] = struct{}{}
+		}
+
 	}
 
 	sort.Sort(sort.Reverse(sort.IntSlice(basins)))
 	return basins[0] * basins[1] * basins[2]
 }
 
-func basin(p *point, g grid) map[string]struct{} {
+func basin(p *nav.Point, g nav.Grid) map[string]struct{} {
 	q := &data.Queue{}
 	visited := map[string]struct{}{p.String(): {}}
 
-	addNeighbours := func(p *point) {
-		for _, n := range p.neighbours(g) {
-			v := g.val(n)
+	addNeighbours := func(p *nav.Point) {
+		for _, n := range p.CompassNeighbours(g) {
+			v := g.Get(n).(int)
 			if v != 9 {
 				q.Push(n)
 			}
@@ -75,7 +72,7 @@ func basin(p *point, g grid) map[string]struct{} {
 	addNeighbours(p)
 
 	for q.Len() != 0 {
-		s := q.Pop().(*point)
+		s := q.Pop().(*nav.Point)
 		// Check if already visited
 		if _, ok := visited[s.String()]; ok {
 			continue
@@ -86,39 +83,4 @@ func basin(p *point, g grid) map[string]struct{} {
 	}
 
 	return visited
-}
-
-type grid [][]int
-
-func (g grid) val(p *point) int {
-	return g[p.y][p.x]
-}
-
-type point struct {
-	x int
-	y int
-}
-
-func (p point) String() string {
-	return fmt.Sprintf("%d,%d", p.x, p.y)
-}
-
-func (p point) neighbours(grid [][]int) []*point {
-	maxy := len(grid) - 1
-	maxx := len(grid[0]) - 1
-	all := []*point{
-		{x: p.x + 1, y: p.y - 0}, // e
-		{x: p.x + 0, y: p.y - 1}, // s
-		{x: p.x - 1, y: p.y + 0}, // w
-		{x: p.x - 0, y: p.y + 1}, // n
-	}
-	// Remove out of range
-	var pts []*point
-	for _, a := range all {
-		if a.x >= 0 && a.y >= 0 && a.x <= maxx && a.y <= maxy {
-			pts = append(pts, a)
-		}
-	}
-
-	return pts
 }

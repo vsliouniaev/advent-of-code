@@ -6,7 +6,7 @@ import (
 )
 
 func TestIterator(t *testing.T) {
-	g := IntGrid{
+	g := grid{
 		{1, 2},
 		{3, 4},
 	}

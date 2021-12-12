@@ -38,7 +38,7 @@ func (p *Point) Rotate(turn Turn) *Point {
 }
 
 func (p *Point) AllNeighbours(grid Grid) []*Point {
-	all := []*Point{
+	return filterOutOfRange([]*Point{
 		{X: p.X + 1, Y: p.Y - 0}, // e
 		{X: p.X + 1, Y: p.Y - 1}, // se
 		{X: p.X + 0, Y: p.Y - 1}, // s
@@ -47,15 +47,35 @@ func (p *Point) AllNeighbours(grid Grid) []*Point {
 		{X: p.X - 1, Y: p.Y + 1}, // nw
 		{X: p.X - 0, Y: p.Y + 1}, // n
 		{X: p.X + 1, Y: p.Y + 1}, // ne
+	}, grid)
+}
+
+func (p *Point) CompassNeighbours(grid Grid) []*Point {
+	return filterOutOfRange([]*Point{
+		{X: p.X + 1, Y: p.Y - 0}, // e
+		{X: p.X + 0, Y: p.Y - 1}, // s
+		{X: p.X - 1, Y: p.Y + 0}, // w
+		{X: p.X - 0, Y: p.Y + 1}, // n
+	}, grid)
+}
+
+func (p *Point) Clone() *Point {
+	return &Point{
+		X: p.X,
+		Y: p.Y,
 	}
-	// Remove out of range
+}
+
+func filterOutOfRange(all []*Point, g Grid) []*Point {
 	var pts []*Point
 	for _, a := range all {
-		if a.X >= 0 && a.Y >= 0 && a.X <= grid.Maxx() && a.Y <= grid.Maxy() {
+		if a.X >= 0 && a.Y >= 0 && a.X <= g.Maxx() && a.Y <= g.Maxy() {
+			if a.Y == 91 {
+				panic("wat")
+			}
 			pts = append(pts, a)
 		}
 	}
-
 	return pts
 }
 

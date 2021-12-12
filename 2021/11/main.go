@@ -12,7 +12,7 @@ func main() {
 }
 
 func part1(file string) int {
-	grid := nav.IntGrid(u.ReadLinesIntGrid(file))
+	grid := u.ReadLinesIntGrid(file)
 
 	flashes := 0
 	for s := 0; s < 100; s++ {
@@ -30,7 +30,7 @@ func part1(file string) int {
 				if grid.Get(p).(int) > 9 {
 					again = true
 					flashes++
-					flash(p, &grid)
+					flash(p, grid)
 				}
 			}
 		}
@@ -40,7 +40,7 @@ func part1(file string) int {
 }
 
 func part2(file string) int {
-	grid := nav.IntGrid(u.ReadLinesIntGrid(file))
+	grid := u.ReadLinesIntGrid(file)
 	size := (grid.Maxx() + 1) * (grid.Maxy() + 1)
 	flashes := 0
 	step := 0
@@ -59,7 +59,7 @@ func part2(file string) int {
 				if grid.Get(p).(int) > 9 {
 					again = true
 					flashes++
-					flash(p, &grid)
+					flash(p, grid)
 				}
 			}
 		}
