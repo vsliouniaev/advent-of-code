@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	fmt.Printf("Part 1: %d\n", part1("2020/8/input"))
-	fmt.Printf("Part 2: %d\n", part2("2020/8/input"))
+	fmt.Printf("Part 1: %d\n", part1(util.RelativeFile("input"))) // 1586
+	fmt.Printf("Part 2: %d\n", part2(util.RelativeFile("input"))) // 703
 }
 
 func part1(file string) int {
@@ -66,7 +66,6 @@ func part2(file string) int {
 			i++
 		case "nop":
 			if cmd == changec {
-				fmt.Printf("Changed nop to jmp at %d\n", i)
 				i += arg
 			} else {
 				i++
@@ -74,7 +73,6 @@ func part2(file string) int {
 			cmd++
 		case "jmp":
 			if cmd == changec {
-				fmt.Printf("Changed jmp to nop at %d\n", i)
 				i++
 			} else {
 				i += arg

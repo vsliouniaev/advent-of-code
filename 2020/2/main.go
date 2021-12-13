@@ -2,19 +2,19 @@ package main
 
 import (
 	"fmt"
-	. "github.com/vsliouniaev/aoc/util"
+	u "github.com/vsliouniaev/aoc/util"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	fmt.Printf("Part 1: %d\n", part1("2020/2/input")) // 383
-	fmt.Printf("Part 2: %d\n", part2("2020/2/input")) // 272
+	fmt.Printf("Part 1: %d\n", part1(u.RelativeFile("input"))) // 383
+	fmt.Printf("Part 2: %d\n", part2(u.RelativeFile("input"))) // 272
 }
 
 func part1(file string) int {
 	corrects := 0
-	for _, line := range ReadLinesStrings(file) {
+	for _, line := range u.ReadLinesStrings(file) {
 		s := strings.Split(line, ": ")
 		lower, upper, letter := parseCriteria(s[0])
 		password := s[1]
@@ -33,7 +33,7 @@ func part1(file string) int {
 
 func part2(file string) int {
 	corrects := 0
-	for _, line := range ReadLinesStrings(file) {
+	for _, line := range u.ReadLinesStrings(file) {
 		s := strings.Split(line, ": ")
 		lower, upper, letter := parseCriteria(s[0])
 		lower--
@@ -53,10 +53,10 @@ func parseCriteria(s string) (lower int, upper int, letter rune) {
 	limits := strings.Split(split[0], "-")
 	l, err := strconv.ParseInt(limits[0], 10, 64)
 	lower = int(l)
-	Check(err)
-	u, err := strconv.ParseInt(limits[1], 10, 64)
-	upper = int(u)
-	Check(err)
+	u.Check(err)
+	up, err := strconv.ParseInt(limits[1], 10, 64)
+	upper = int(up)
+	u.Check(err)
 	letter = rune(split[1][0])
 	return
 }

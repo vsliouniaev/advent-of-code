@@ -11,8 +11,8 @@ import (
 )
 
 func main() {
-	fmt.Printf("Part 1: %d\n", part1("2020/13/input")) // 410
-	fmt.Printf("Part 2: %d\n", part2("2020/13/input")) // 600691418730595
+	fmt.Printf("Part 1: %d\n", part1(u.RelativeFile("input"))) // 410
+	fmt.Printf("Part 2: %d\n", part2(u.RelativeFile("input"))) // 600691418730595
 }
 
 func part1(file string) int {

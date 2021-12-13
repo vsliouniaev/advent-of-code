@@ -70,9 +70,6 @@ func filterOutOfRange(all []*Point, g Grid) []*Point {
 	var pts []*Point
 	for _, a := range all {
 		if a.X >= 0 && a.Y >= 0 && a.X <= g.Maxx() && a.Y <= g.Maxy() {
-			if a.Y == 91 {
-				panic("wat")
-			}
 			pts = append(pts, a)
 		}
 	}

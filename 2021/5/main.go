@@ -2,19 +2,19 @@ package main
 
 import (
 	"fmt"
-	. "github.com/vsliouniaev/aoc/util"
+	u "github.com/vsliouniaev/aoc/util"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	fmt.Printf("Part 1: %d\n", part1("2021/5/input")) // 5145
-	fmt.Printf("Part 2: %d\n", part2("2021/5/input")) // 16518
+	fmt.Printf("Part 1: %d\n", part1(u.RelativeFile("input"))) // 5145
+	fmt.Printf("Part 2: %d\n", part2(u.RelativeFile("input"))) // 16518
 }
 
 func part1(file string) int {
 	pos := make(map[string]int)
-	for _, line := range ReadLinesStrings(file) {
+	for _, line := range u.ReadLinesStrings(file) {
 		// Could rewrite this in terms of part2
 		seg := parse(line)
 		var s int
@@ -51,7 +51,7 @@ func part1(file string) int {
 
 func part2(file string) int {
 	pos := make(map[string]int)
-	for _, line := range ReadLinesStrings(file) {
+	for _, line := range u.ReadLinesStrings(file) {
 		seg := parse(line)
 		for {
 			x, y, zero := seg.shrink()
@@ -79,14 +79,14 @@ func parse(line string) (s segment) {
 	end := strings.Split(se[1], ",")
 
 	s.sx, err = strconv.Atoi(start[0])
-	Check(err)
+	u.Check(err)
 	s.sy, err = strconv.Atoi(start[1])
-	Check(err)
+	u.Check(err)
 
 	s.ex, err = strconv.Atoi(end[0])
-	Check(err)
+	u.Check(err)
 	s.ey, err = strconv.Atoi(end[1])
-	Check(err)
+	u.Check(err)
 	return
 }
 

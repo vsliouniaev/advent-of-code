@@ -13,7 +13,7 @@ func main() {
 	fmt.Printf("Part 2: \n%s\n", part2(u.RelativeFile("input"))) // LRGPRECB
 }
 
-// foldLeftOrUp is is the entire answer to this question. The rest is just string parsing and printing
+// foldLeftOrUp is the entire answer to this question. The rest is just string parsing and printing
 func foldLeftOrUp(x, y *int, points map[nav.Point]struct{}) map[nav.Point]struct{} {
 	out := make(map[nav.Point]struct{})
 	for p := range points {

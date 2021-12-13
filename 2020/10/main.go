@@ -7,8 +7,8 @@ import (
 )
 
 func main() {
-	fmt.Printf("Part 1: %d\n", part1("2020/10/input"))
-	fmt.Printf("Part 2: %d\n", part2("2020/10/input")) // 453551299002368
+	fmt.Printf("Part 1: %d\n", part1(util.RelativeFile("input"))) // 2432
+	fmt.Printf("Part 2: %d\n", part2(util.RelativeFile("input"))) // 453551299002368
 }
 
 func part1(file string) int {

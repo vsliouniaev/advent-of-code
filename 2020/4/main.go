@@ -2,21 +2,22 @@ package main
 
 import (
 	"fmt"
-	. "github.com/vsliouniaev/aoc/util"
+	//. "github.com/vsliouniaev/aoc/util"
+	u "github.com/vsliouniaev/aoc/util"
 	"regexp"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	fmt.Printf("Part 1: %d\n", part1("2020/4/input")) // 226
-	fmt.Printf("Part 2: %d\n", part2("2020/4/input")) // 160
+	fmt.Printf("Part 1: %d\n", part1(u.RelativeFile("input"))) // 226
+	fmt.Printf("Part 2: %d\n", part2(u.RelativeFile("input"))) // 160
 }
 
 func part1(file string) int {
 	valids := 0
 	val := validator()
-	for _, line := range ReadLinesStrings(file) {
+	for _, line := range u.ReadLinesStrings(file) {
 		if line == "" {
 			if len(val) == 0 {
 				valids++
@@ -39,7 +40,7 @@ func part1(file string) int {
 func part2(file string) int {
 	valids := 0
 	passVal := validator()
-	for _, line := range ReadLinesStrings(file) {
+	for _, line := range u.ReadLinesStrings(file) {
 		if line == "" {
 			if len(passVal) == 0 {
 				valids++

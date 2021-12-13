@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/vsliouniaev/aoc/util"
+	u "github.com/vsliouniaev/aoc/util"
 )
 
 func main() {
-	fmt.Printf("Part 1: %d\n", part1("2021/6/sample")) // 362740
-	fmt.Printf("Part 2: %d\n", part2("2021/6/input"))  // 1644874076764
+	fmt.Printf("Part 1: %d\n", part1(u.RelativeFile("input"))) // 362740
+	fmt.Printf("Part 2: %d\n", part2(u.RelativeFile("input"))) // 1644874076764
 }
 
 func part1(file string) int {
@@ -21,7 +21,7 @@ func part2(file string) int {
 func afterDays(file string, days int) int {
 	var size = 9
 	fish := make([]int, size)
-	for _, d := range util.ReadCSVLine(file) {
+	for _, d := range u.ReadCSVLine(file) {
 		fish[d]++
 	}
 
