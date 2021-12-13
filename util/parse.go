@@ -103,5 +103,10 @@ func RelativeFile(file string) string {
 	_, b, _, _ := runtime.Caller(1)
 	path, err := os.Getwd()
 	Check(err)
-	return filepath.Join(strings.TrimPrefix(filepath.Dir(b), path)[1:], file)
+	trimPath := strings.TrimPrefix(filepath.Dir(b), path)
+	if trimPath == "" {
+		return filepath.Join(path, file)
+	} else {
+		return filepath.Join(trimPath[1:], file)
+	}
 }

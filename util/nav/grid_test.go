@@ -10,8 +10,8 @@ func TestIterator(t *testing.T) {
 		{1, 2},
 		{3, 4},
 	}
-	i := g.GetIterator()
-	for p := i.Next(); p != nil; p = i.Next() {
+
+	for i, p := g.GetIterator(); p != nil; p = i.Next() {
 		fmt.Printf("%s = %d\n", p, g.Get(p).(int))
 	}
 
