@@ -8,6 +8,7 @@ import (
 type Grid interface {
 	Maxx() int
 	Maxy() int
+	Size() int
 	Set(p *Point, i interface{})
 	Get(p *Point) interface{}
 	GetIterator() (*Gridterator, *Point)
@@ -80,6 +81,10 @@ func (g grid) Maxy() int {
 	return len(g) - 1
 }
 
+func (g grid) Size() int {
+	return len(g) * len(g[0])
+}
+
 func (g grid) Get(p *Point) interface{} {
 	return g[p.Y][p.X]
 }
@@ -92,7 +97,7 @@ func (g grid) String() string {
 	sb := strings.Builder{}
 	for y := range g {
 		for x := range g[y] {
-			sb.WriteString(fmt.Sprint(g[y][x]))
+			sb.WriteString(fmt.Sprintf("%d", g[y][x]))
 		}
 		sb.WriteRune('\n')
 	}

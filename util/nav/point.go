@@ -27,6 +27,10 @@ func (p *Point) Vector() Vector {
 	return Vector(*p)
 }
 
+func (p *Point) Equals(other *Point) bool {
+	return p.X == other.X && p.Y == other.Y
+}
+
 // Rotate changes the location of the Point about 0,0
 func (p *Point) Rotate(turn Turn) *Point {
 	c := math.Cos(float64(turn) * (math.Pi / 2))
